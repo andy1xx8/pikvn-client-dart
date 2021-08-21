@@ -14,8 +14,10 @@ class PikVnClient {
   PikVnClient() {
     _dio = Dio(_buildBaseOptions());
     //Trust ssl
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
       return client;
     };
   }
@@ -30,7 +32,9 @@ class PikVnClient {
   Future<String> uploadImage(File file, {int maxWidth = 1200}) async {
     final ext = _getFileExtension(file);
     final imageData = _resizeImageIfNeeded(file, ext, maxWidth);
-    final body = {'image': 'data:image/$ext;base64,${base64.encode(imageData)}'};
+    final body = {
+      'image': 'data:image/$ext;base64,${base64.encode(imageData)}'
+    };
     final headers = {
       'x-requested-with': 'XMLHttpRequest',
       'user-agent':
@@ -51,7 +55,10 @@ class PikVnClient {
   }
 
   String _getFileExtension(File file) {
-    return RegExp('\\.(?<ext>\\w+)').allMatches(file.path).map((e) => e.namedGroup('ext')).lastWhere(
+    return RegExp('\\.(?<ext>\\w+)')
+        .allMatches(file.path)
+        .map((e) => e.namedGroup('ext'))
+        .lastWhere(
           (element) => element != null && element.isNotEmpty,
           orElse: () => 'jpeg',
         );
@@ -82,7 +89,11 @@ class PikVnClient {
 
   BaseOptions _buildBaseOptions() {
     bool validateStatus(int status) {
-      return status >= 200 && status < 300 || status == 301 || status == 302 || status == 303 || status == 307;
+      return status >= 200 && status < 300 ||
+          status == 301 ||
+          status == 302 ||
+          status == 303 ||
+          status == 307;
     }
 
     return BaseOptions(
@@ -100,7 +111,8 @@ class PikVnClient {
 
   Map<String, String> _buildBaseHeaders() {
     return {
-      HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded; charset=UTF-8',
+      HttpHeaders.contentTypeHeader:
+          'application/x-www-form-urlencoded; charset=UTF-8',
       HttpHeaders.userAgentHeader:
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
       HttpHeaders.acceptHeader:
