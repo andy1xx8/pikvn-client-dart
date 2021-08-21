@@ -3,11 +3,14 @@ A library to upload image to https://2.pik.vn.
 ## Usage
 
 1. Install package 
-   
+
+
+https://pub.dev/packages/pikvn_client
+
 Add a line like this to your package's pubspec.yaml (and run an implicit dart pub get):
 ```yaml
 dependencies:
-  pikvn_client: ^0.0.1 // Or the latest version
+  pikvn_client: ^0.0.3
 ```
 2. Usage
 
