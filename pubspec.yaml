@@ -1,11 +1,11 @@
 name: pikvn_client
 description: A client to upload your photos (local file, remote url..etc) to https://2.pik.vn. Supports resize images on the fly
-version: 0.0.2
+version: 0.0.4
 homepage: https://github.com/andy1xx8/pikvn-client-dart
 repository: https://github.com/andy1xx8/pikvn-client-dart
 
 environment:
-  sdk: ">=2.8.1 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   dio: ^4.0.0

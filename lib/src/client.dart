@@ -9,7 +9,7 @@ class PikVnClient {
   /// Base url of PIK server
   static const String BASE_URL = 'https://2.pik.vn';
 
-  Dio _dio;
+  late Dio _dio;
 
   PikVnClient() {
     _dio = Dio(_buildBaseOptions(PikVnClient.BASE_URL));
@@ -51,10 +51,6 @@ class PikVnClient {
   }
 
   BaseOptions _buildBaseOptions(String baseUrl) {
-    bool validateStatus(int status) {
-      return status >= 200 && status < 300 || status == 301 || status == 302 || status == 303 || status == 307;
-    }
-
     return BaseOptions(
       baseUrl: baseUrl,
       responseType: ResponseType.plain,
@@ -63,7 +59,7 @@ class PikVnClient {
       followRedirects: true,
       maxRedirects: 5,
       receiveDataWhenStatusError: true,
-      validateStatus: validateStatus,
+      validateStatus: _validateStatus,
       headers: {
         HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded; charset=UTF-8',
         HttpHeaders.userAgentHeader:
@@ -78,5 +74,13 @@ class PikVnClient {
         'upgrade-insecure-requests': '1',
       },
     );
+  }
+
+  bool _validateStatus(int? status) {
+    if (status != null) {
+      return status >= 200 && status < 300 || status == 301 || status == 302 || status == 303 || status == 307;
+    } else {
+      return false;
+    }
   }
 }
