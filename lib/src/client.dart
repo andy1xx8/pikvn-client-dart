@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:pikvn_client/src/utils.dart';
-import 'package:brotli/brotli.dart';
 
 class PikVnClient {
   /// Base url of PIK server
