@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:pikvn_client/src/utils.dart';
+import 'package:brotli/brotli.dart';
 
 class PikVnClient {
   /// Base url of PIK server
@@ -32,6 +33,7 @@ class PikVnClient {
     final imageData = Utils.resizeImageIfRequired(file, ext, maxWidth);
     final body = {'image': 'data:image/$ext;base64,${base64.encode(imageData)}'};
     final headers = {
+      'Accept-Encoding': 'gzip, deflate',
       'x-requested-with': 'XMLHttpRequest',
       'user-agent':
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
@@ -42,13 +44,20 @@ class PikVnClient {
     );
 
     final response = await _dio.post('/', data: body, options: options);
-    final Map<String, dynamic> json = jsonDecode(response.data);
+
+    final Map<String, dynamic> json = _readResponseAsJson(response);
     final savedUrl = json['saved'];
     if (savedUrl == null || (savedUrl is bool && !savedUrl)) {
       throw Exception('Can\'t upload at the moment.');
     }
     return '$BASE_URL/$savedUrl';
   }
+
+  Map<String, dynamic> _readResponseAsJson(Response response) {
+    final encoding = response.headers.value('content-encoding');
+    return jsonDecode(response.data);
+  }
+
 
   BaseOptions _buildBaseOptions(String baseUrl) {
     return BaseOptions(
