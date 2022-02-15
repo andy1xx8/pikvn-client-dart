@@ -10,7 +10,7 @@ https://pub.dev/packages/pikvn_client
 Add a line like this to your package's pubspec.yaml (and run an implicit dart pub get):
 ```yaml
 dependencies:
-  pikvn_client: ^0.0.5
+  pikvn_client: ^0.0.7
 ```
 2. Usage
 
